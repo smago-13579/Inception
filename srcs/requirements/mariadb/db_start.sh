@@ -1,8 +1,9 @@
 #!/bin/bash
 
-echo "create database"
 
-if [ ! -d /var/lib/mysql/wordpress ]; then 
+if [ ! -f /tmp/sql_reset ]; then 
+	
+	echo "create database"
 
 	mysql_install_db --user=mysql --datadir=/var/lib/mysql
 	touch /tmp/sql_reset
@@ -14,9 +15,9 @@ if [ ! -d /var/lib/mysql/wordpress ]; then
 	echo "CREATE DATABASE IF NOT EXISTS wordpress;" >> /tmp/sql_reset
 	echo "GRANT ALL PRIVILEGES ON wordpress.* TO '${DATABASE_USER}'@'%' IDENTIFIED BY '${DATABASE_UPASS}';" >> /tmp/sql_reset
 	echo "FLUSH PRIVILEGES;" >> /tmp/sql_reset
+	echo "all done!!!"
 
 fi
 
-echo "all done!!!"
 
 exec $@

@@ -6,9 +6,6 @@ RUN	apt-get -y install mariadb-client php7.3 \
 	php7.3-mysql php7.3-fpm php-json php-xml wget
 
 RUN mkdir -p /var/www
-# RUN wget https://wordpress.org/latest.tar.gz
-# RUN tar xzf latest.tar.gz -C /var/www/
-# RUN rm -f latest.tar.gz
 RUN chown -R www-data:www-data /var/www && chmod 775 -R /var/www
 
 COPY start.sh /tmp

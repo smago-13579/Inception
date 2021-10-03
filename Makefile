@@ -17,3 +17,4 @@ clean:
 	sudo rm -rf ${WORDPRESS_V} ${DATABASE_V}
 	${DC} -f ${DC_CONFIG} down
 
+re: clean all

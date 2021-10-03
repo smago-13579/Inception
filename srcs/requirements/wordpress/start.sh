@@ -12,12 +12,13 @@ if [ ! -d /var/www/wordpress/wp-content ]; then
 	wp-cli core download --allow-root 
 	wp-cli core config --allow-root --dbname=wordpress --dbuser=$DATABASE_USER --dbpass=$DATABASE_UPASS --dbhost=mariadb
 	wp-cli core install --allow-root \
-	--url=${WORDPRESS_URL} \
+	--url=3.14.144.26 \
 	--title=${WORDPRESS_TITLE} \
-	--admin_user=${WORDPRESS_ADMIN_USER} \
-	--admin_password=${WORDPRESS_ADMIN_PASS} \
-	--admin_email=${WORDPRESS_ADMIN_EMAIL}
-	wp-cli user create --allow-root smago smago@student.21-school.ru --user_pass=smago123
+	--admin_user=${WORDPRESS_ADM_USER} \
+	--admin_password=${WORDPRESS_ADM_PASS} \
+	--admin_email=smago@ya.ru
+	wp-cli --allow-root user create ${WORDPRESS_SUBS} subs@ya.ru --user_pass=${WORDPRESS_SUBS_PASS} --role=subscriber
+	wp-cli --allow-root user create ${WORDPRESS_AUTHOR} author@ya.ru --user_pass=${WORDPRESS_AUTHOR_PASS} --role=author
 fi
 
 exec "$@"
