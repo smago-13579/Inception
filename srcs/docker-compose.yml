@@ -1,0 +1,87 @@
+version: "3.7"
+
+services:
+        nginx:
+                build: ./requirements/nginx
+                image: nginx
+                container_name: nginx
+                volumes:
+                        - wpdata:/var/www/wordpress
+                        - adminer:/var/www/adminer
+                ports:
+                        - 443:443
+                depends_on:
+                        - wordpress
+                restart: always
+                networks:
+                        - inception
+        wordpress:
+                build: ./requirements/wordpress
+                image: wordpress
+                container_name: wordpress
+                volumes:
+                        - wpdata:/var/www/wordpress
+                env_file: .env
+                depends_on:
+                        - mariadb
+                restart: always
+                networks:
+                        - inception
+        adminer:
+                build: ./requirements/bonus/adminer
+                image: adminer
+                container_name: adminer
+                volumes:
+                        - adminer:/var/www/adminer
+                depends_on:
+                        - mariadb
+                restart: always
+                networks:
+                        - inception
+        mariadb:
+                build: ./requirements/mariadb
+                image: mariadb
+                container_name: mariadb
+                volumes:
+                        - database:/var/lib/mysql
+                env_file: .env
+                restart: always
+                networks:
+                        - inception
+        influxdb:
+                build: ./requirements/bonus/influxdb
+                image: influxdb
+                container_name: influxdb
+                ports:
+                        - 8086:8086
+                env_file: .env
+                restart: always
+                networks:
+                        - inception
+        
+volumes:
+        wpdata:
+                driver: local
+                name: wpdata
+                driver_opts:
+                        type: 'none'
+                        o: 'bind'
+                        device: '/home/smago/data/wordpress' 
+        database:
+                driver: local
+                name: database
+                driver_opts:
+                        type: 'none'
+                        o: 'bind'
+                        device: '/home/smago/data/database'
+        adminer:
+                driver: local
+                name: adminer
+                driver_opts:
+                        type: 'none'
+                        o: 'bind'
+                        device: '/home/smago/data/adminer'
+
+networks:
+        inception:
+                driver: bridge
